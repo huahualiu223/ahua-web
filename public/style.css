@@ -22,3 +22,22 @@ article h1{margin-top:26px}
 #body{margin-top:28px}
 footer{border-bottom:0;border-top:1px solid var(--line);font-size:.875rem}
 @media(max-width:480px){main{padding:45px 0}li{flex-wrap:wrap}}
+/* Profile and contact row */
+[hidden]{display:none!important}
+body{font-family:Inter,"Microsoft YaHei",system-ui,sans-serif}
+.brand{font-family:Allura,KaiTi,serif;font-size:1.65rem}
+#intro{text-align:center;padding:clamp(42px,10vw,100px) 0 52px}
+#intro h1{font-family:"Instrument Serif","Songti SC",SimSun,serif;font-weight:500}
+.portrait{position:relative;isolation:isolate;display:grid;place-items:center;margin:0 auto 34px;width:132px;height:132px;border-radius:50%;background:var(--line);color:var(--accent);font:2.7rem Georgia,serif}
+.portrait img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.portrait i{position:absolute;inset:23px -25px;border:1px solid var(--line);border-radius:50%;pointer-events:none;animation:orbit 24s linear infinite}
+.portrait i::after{content:"✦";position:absolute;right:-7px;top:calc(50% - 10px);font:18px Georgia,serif}
+@keyframes orbit{from{transform:rotate(-24deg)}to{transform:rotate(336deg)}}
+#contacts{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 24px;margin-top:22px}
+#wechat{margin:14px auto 0;width:fit-content}
+#wechat summary{cursor:pointer;color:var(--accent)}
+#wechat img{display:block;width:min(160px,60vw);margin:10px auto}
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.35;background-image:radial-gradient(circle,var(--accent) 1px,transparent 1.8px),radial-gradient(circle,var(--line) 2px,transparent 2.7px);background-size:243px 283px,337px 319px;animation:drift 55s linear infinite}
+body::after{opacity:.2;animation-direction:reverse}
+@keyframes drift{to{background-position:243px 283px,337px 319px}}
+@media(prefers-reduced-motion:reduce){.portrait i,body::before,body::after{animation:none}}

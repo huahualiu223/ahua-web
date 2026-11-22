@@ -15,6 +15,38 @@ async function render() {
   document.querySelector("#intro h1").textContent = site.name;
   byId("description").textContent = site.description;
   byId("bio").textContent = site.about;
+  byId("initial").textContent = Array.from(site.name.trim())[0] ?? "✦";
+  const setImage = (id, path) => {
+    if (!path?.startsWith("/uploads/")) return;
+    const img = byId(id);
+    img.addEventListener("error", () => {
+      img.hidden = true;
+      if (id === "avatar") byId("initial").hidden = false;
+    }, { once: true });
+    img.src = path;
+    img.hidden = false;
+    if (id === "avatar") byId("initial").hidden = true;
+  };
+  setImage("avatar", site.avatar);
+  setImage("wechat-qr", site.wechatQr);
+  byId("wechat-name").textContent = site.wechatName ?? "";
+  byId("wechat").hidden = !(site.wechatName || site.wechatQr?.startsWith("/uploads/"));
+
+  const contacts = byId("contacts");
+  const instagram = site.instagram?.trim().replace(/^@/, "");
+  const links = [
+    ["邮箱", site.email && "mailto:" + site.email],
+    ["Instagram", instagram && /^[a-z0-9_.]+$/i.test(instagram) && "https://www.instagram.com/" + instagram + "/"],
+    ...(site.links ?? []).map(({ label, url }) => [label, /^https:\/\//i.test(url) && url]),
+  ];
+  for (const [label, url] of links) {
+    if (!label || !url) continue;
+    const link = document.createElement("a");
+    link.textContent = label;
+    link.href = url;
+    contacts.append(link);
+  }
+  contacts.hidden = !contacts.children.length;
 
   const posts = (data.posts ?? []).filter((post) => !post.draft)
     .sort((a, b) => b.date.localeCompare(a.date));

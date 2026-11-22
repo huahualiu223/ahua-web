@@ -15,6 +15,18 @@ collections:
           - {name: name, label: 站名, widget: string}
           - {name: description, label: 首页简介, widget: text}
           - {name: about, label: 关于, widget: text}
+          - {name: avatar, label: 头像, widget: image, required: false, choose_url: false}
+          - {name: email, label: 公开邮箱, widget: string, required: false}
+          - {name: instagram, label: Instagram 用户名, widget: string, required: false}
+          - {name: wechatName, label: 公众号搜索名称, widget: string, required: false}
+          - {name: wechatQr, label: 公众号二维码, widget: image, required: false, choose_url: false}
+          - name: links
+            label: 其他链接
+            widget: list
+            required: false
+            fields:
+              - {name: label, label: 显示名称, widget: string}
+              - {name: url, label: HTTPS 链接, widget: string}
       - name: posts
         label: 文章
         file: public/content/posts.json
