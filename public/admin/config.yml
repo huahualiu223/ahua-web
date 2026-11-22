@@ -1,0 +1,30 @@
+backend:
+  name: github
+  repo: huahualiu223/ahua-web
+  branch: master
+media_folder: public/uploads
+public_folder: /uploads
+collections:
+  - name: content
+    label: 网站内容
+    files:
+      - name: site
+        label: 首页与关于
+        file: public/content/site.json
+        fields:
+          - {name: name, label: 站名, widget: string}
+          - {name: description, label: 首页简介, widget: text}
+          - {name: about, label: 关于, widget: text}
+      - name: posts
+        label: 文章
+        file: public/content/posts.json
+        fields:
+          - name: posts
+            label: 文章列表
+            widget: list
+            required: false
+            fields:
+              - {name: slug, label: 文章链接名, widget: string}
+              - {name: title, label: 标题, widget: string}
+              - {name: date, label: 日期, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD}
+              - {name: body, label: 正文, widget: text}

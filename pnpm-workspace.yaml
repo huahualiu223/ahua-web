@@ -1,7 +1,0 @@
-packages:
-  - '.'
-allowBuilds:
-  esbuild: true
-  workerd: true
-overrides:
-  katex: "^0.19.1"
