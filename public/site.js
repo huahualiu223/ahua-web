@@ -65,18 +65,42 @@ async function render() {
     return;
   }
 
-  if (!posts.length) byId("post-status").textContent = "暂无文章";
-  posts.forEach((post) => {
-    const item = document.createElement("li");
-    const link = document.createElement("a");
-    const time = document.createElement("time");
-    link.href = "/?post=" + encodeURIComponent(post.slug);
-    link.textContent = post.title;
-    time.dateTime = post.date;
-    time.textContent = post.date;
-    item.append(link, time);
-    byId("post-list").append(item);
-  });
+  const months = byId("months");
+  const monthIds = [...new Set(posts.map((post) => post.date.slice(0, 7)))].slice(0, 12).reverse();
+  function showEntries(month) {
+    for (const [kind, stem] of [["article", "post"], ["note", "note"]]) {
+      const list = byId(stem + "-list");
+      list.replaceChildren();
+      const entries = posts.filter((post) =>
+        (post.kind ?? "article") === kind && (!month || post.date.startsWith(month)));
+      byId(stem + "-status").textContent = entries.length ? "" : (kind === "note" ? "暂无随笔" : "暂无文章");
+      for (const post of entries.slice(0, 6)) {
+        const item = document.createElement("li");
+        const link = document.createElement("a");
+        const time = document.createElement("time");
+        link.href = "/?post=" + encodeURIComponent(post.slug);
+        link.textContent = post.title;
+        time.dateTime = post.date;
+        time.textContent = post.date.replaceAll("-", ".");
+        item.append(time, link);
+        list.append(item);
+      }
+    }
+  }
+
+  for (const month of ["", ...monthIds]) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = month ? month.replace("-", ".") : "全部";
+    button.setAttribute("aria-pressed", String(!month));
+    button.addEventListener("click", () => {
+      for (const sibling of months.children) sibling.setAttribute("aria-pressed", String(sibling === button));
+      showEntries(month);
+    });
+    months.append(button);
+  }
+  months.hidden = !monthIds.length;
+  showEntries("");
 }
 
 render().catch(() => byId("post-status").textContent = "内容加载失败，请刷新页面重试。");

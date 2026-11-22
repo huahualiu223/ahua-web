@@ -38,5 +38,13 @@ collections:
             fields:
               - {name: slug, label: 文章链接名, widget: string}
               - {name: title, label: 标题, widget: string}
+              - name: kind
+                label: 类型
+                widget: select
+                required: false
+                default: article
+                options:
+                  - {label: 文章, value: article}
+                  - {label: 随笔, value: note}
               - {name: date, label: 日期, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD}
               - {name: body, label: 正文, widget: text}
