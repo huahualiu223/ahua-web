@@ -61,3 +61,17 @@ header nav{flex-wrap:wrap;justify-content:flex-end;gap:4px 18px}
 @media(max-width:620px){.brand{font-size:1.4rem}header{padding-inline:12px}header nav{gap:4px 10px}}
 @media(prefers-reduced-motion:no-preference){#post-list li{animation:entry-in .32s ease-out both}}
 @keyframes entry-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+/* Cream, peach and cocoa tones from the plush duck photo. */
+:root{--bg:#fffbf3;--ink:#49352e;--muted:#70554b;--line:#ead3bf;--accent:#8b493b;--lace:#eeb6ba;--pill:#fff3df;--portrait:#fff0d6}
+@media(prefers-color-scheme:dark){:root{--bg:#2c211e;--ink:#ffead8;--muted:#ddbcaa;--line:#674a42;--accent:#ffbbab;--lace:#8d5a60;--pill:#3e2e28;--portrait:#4c352d}}
+body{font-family:Nunito,"Zen Maru Gothic","Microsoft YaHei",system-ui,sans-serif}
+body::before{opacity:.23;background-image:radial-gradient(circle,var(--accent) 1.1px,transparent 2px),radial-gradient(circle,var(--lace) 2px,transparent 3px);background-size:52px 52px,173px 149px}
+body::after{opacity:.16;background-image:radial-gradient(ellipse at 25% 20%,var(--lace),transparent 44%),radial-gradient(ellipse at 76% 34%,#f6c478,transparent 48%);background-size:100% 100%;animation:none}
+@keyframes drift{to{background-position:52px 52px,173px 149px}}
+header{background:var(--pill);box-shadow:0 8px 30px rgb(114 66 46 / 8%)}
+.brand,#intro h1,#posts h2,#about h2{font-family:Nunito,"Zen Maru Gothic","Microsoft YaHei",sans-serif;font-weight:800;letter-spacing:.015em}
+.portrait{width:152px;height:152px;background:var(--portrait);outline:5px solid var(--pill);box-shadow:0 9px 30px rgb(165 96 59 / 20%)}
+.portrait img{object-position:50% 54%}
+.portrait i{border-color:var(--lace)}
+#intro::after{opacity:.75}
+#months button[aria-pressed="true"],#kinds button[aria-pressed="true"]{background:var(--pill);border-color:var(--lace)}
