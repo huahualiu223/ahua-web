@@ -65,42 +65,56 @@ async function render() {
     return;
   }
 
-  const months = byId("months");
+  const labels = new Map([
+    ["writing", "文章与随笔"], ["project", "小玩意"],
+    ["activity", "活动"], ["daily", "日常小事"],
+  ]);
+  const getKind = (post) => labels.has(post.kind) ? post.kind : "writing";
   const monthIds = [...new Set(posts.map((post) => post.date.slice(0, 7)))].slice(0, 12).reverse();
-  function showEntries(month) {
-    for (const [kind, stem] of [["article", "post"], ["note", "note"]]) {
-      const list = byId(stem + "-list");
-      list.replaceChildren();
-      const entries = posts.filter((post) =>
-        (post.kind ?? "article") === kind && (!month || post.date.startsWith(month)));
-      byId(stem + "-status").textContent = entries.length ? "" : (kind === "note" ? "暂无随笔" : "暂无文章");
-      for (const post of entries.slice(0, 6)) {
-        const item = document.createElement("li");
-        const link = document.createElement("a");
-        const time = document.createElement("time");
-        link.href = "/?post=" + encodeURIComponent(post.slug);
-        link.textContent = post.title;
-        time.dateTime = post.date;
-        time.textContent = post.date.replaceAll("-", ".");
-        item.append(time, link);
-        list.append(item);
-      }
+  let month = "";
+  let kind = "";
+
+  function showEntries() {
+    const list = byId("post-list");
+    list.replaceChildren();
+    const entries = posts.filter((post) =>
+      (!kind || getKind(post) === kind) && (!month || post.date.startsWith(month)));
+    byId("post-status").textContent = entries.length ? "" : "这里暂时没有记录。";
+    for (const post of entries) {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      const time = document.createElement("time");
+      const category = document.createElement("span");
+      link.href = "/?post=" + encodeURIComponent(post.slug);
+      link.textContent = post.title;
+      time.dateTime = post.date;
+      time.textContent = post.date.replaceAll("-", ".");
+      category.textContent = labels.get(getKind(post));
+      item.append(time, link, category);
+      list.append(item);
     }
   }
 
-  for (const month of ["", ...monthIds]) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = month ? month.replace("-", ".") : "全部";
-    button.setAttribute("aria-pressed", String(!month));
-    button.addEventListener("click", () => {
-      for (const sibling of months.children) sibling.setAttribute("aria-pressed", String(sibling === button));
-      showEntries(month);
-    });
-    months.append(button);
+  function addFilters(id, options, select) {
+    const nav = byId(id);
+    nav.hidden = options.length === 0;
+    for (const [value, label] of [["", "全部"], ...options]) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = label;
+      button.setAttribute("aria-pressed", String(!value));
+      button.addEventListener("click", () => {
+        for (const sibling of nav.children) sibling.setAttribute("aria-pressed", String(sibling === button));
+        select(value);
+        showEntries();
+      });
+      nav.append(button);
+    }
   }
-  months.hidden = !monthIds.length;
-  showEntries("");
+
+  addFilters("months", monthIds.map((id) => [id, id.replace("-", ".")]), (value) => { month = value; });
+  addFilters("kinds", posts.length ? [...labels] : [], (value) => { kind = value; });
+  showEntries();
 }
 
 render().catch(() => byId("post-status").textContent = "内容加载失败，请刷新页面重试。");

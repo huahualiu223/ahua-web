@@ -49,16 +49,15 @@ header nav{flex-wrap:wrap;justify-content:flex-end;gap:4px 18px}
 #intro::after{content:"";display:block;width:min(220px,65%);height:10px;margin:42px auto 0;background:radial-gradient(circle at 9px 0,transparent 7px,var(--lace) 7.5px 8.5px,transparent 9px) repeat-x;background-size:18px 10px}
 #archive{scroll-margin-top:86px}
 #months{display:flex;flex-wrap:wrap;gap:6px 12px;padding:0 0 20px;border-bottom:1px solid var(--line);margin-bottom:32px}
-#months button{font:inherit;font-size:.875rem;padding:5px 10px;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:15px;cursor:pointer}
-#months button[aria-pressed="true"]{background:var(--lace);border-color:var(--line);color:var(--ink)}
-.entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(22px,6vw,62px)}
-.entries>div{scroll-margin-top:86px}
-.entries h2{font-family:"Instrument Serif","Songti SC",SimSun,serif;font-size:1.55rem}
-.entries h2::before{content:"✦";color:var(--accent);font-size:.8rem;margin-right:10px}
-.entries li{position:relative;justify-content:flex-start;align-items:baseline;border-top:0;border-left:1px solid var(--line);padding:8px 0 8px 16px}
-.entries li::before{content:"";position:absolute;left:-3px;top:20px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
-.entries a{overflow-wrap:anywhere}
-.entries time{font-variant-numeric:tabular-nums}
-@media(max-width:620px){.entries{grid-template-columns:1fr}.brand{font-size:1.4rem}header{padding-inline:12px}header nav{gap:4px 10px}}
-@media(prefers-reduced-motion:no-preference){.entries li{animation:entry-in .32s ease-out both}.entries a{transition:color .2s ease}.entries a:hover{color:var(--ink)}}
+#months button,#kinds button{font:inherit;font-size:.875rem;padding:5px 10px;color:var(--muted);background:transparent;border:1px solid transparent;border-radius:15px;cursor:pointer}
+#months button[aria-pressed="true"],#kinds button[aria-pressed="true"]{background:var(--lace);border-color:var(--line);color:var(--ink)}
+#posts{scroll-margin-top:86px}
+#posts h2{font-family:"Instrument Serif","Songti SC",SimSun,serif;font-size:1.55rem}
+#posts h2::before{content:"✦";color:var(--accent);font-size:.8rem;margin-right:10px}
+#kinds{display:flex;flex-wrap:wrap;gap:6px 12px}
+#post-list li{justify-content:flex-start;align-items:baseline}
+#post-list a{overflow-wrap:anywhere}
+#post-list li span{margin-left:auto;color:var(--muted);font-size:.875rem}
+@media(max-width:620px){.brand{font-size:1.4rem}header{padding-inline:12px}header nav{gap:4px 10px}}
+@media(prefers-reduced-motion:no-preference){#post-list li{animation:entry-in .32s ease-out both}}
 @keyframes entry-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
