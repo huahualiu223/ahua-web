@@ -50,8 +50,14 @@ async function render() {
 
   const posts = (data.posts ?? []).filter((post) => !post.draft)
     .sort((a, b) => b.date.localeCompare(a.date));
-  const selected = new URLSearchParams(location.search).get("post");
+  const query = new URLSearchParams(location.search);
+  const selected = query.get("post");
   if (selected !== null) {
+    const back = new URLSearchParams();
+    for (const key of ["month", "kind"]) {
+      if (query.has(key)) back.set(key, query.get(key));
+    }
+    byId("back-to-records").href = "/?" + back + "#record-" + encodeURIComponent(selected);
     const post = posts.find((entry) => entry.slug === selected);
     document.querySelectorAll("main > section").forEach((section) => section.hidden = true);
     const article = byId("article");
@@ -71,21 +77,37 @@ async function render() {
   ]);
   const getKind = (post) => labels.has(post.kind) ? post.kind : "writing";
   const monthIds = [...new Set(posts.map((post) => post.date.slice(0, 7)))].slice(0, 12).reverse();
-  let month = "";
-  let kind = "";
+  let month = monthIds.includes(query.get("month")) ? query.get("month") : "";
+  let kind = labels.has(query.get("kind")) ? query.get("kind") : "";
+
+  function updateFilters() {
+    const filters = new URLSearchParams();
+    if (month) filters.set("month", month);
+    if (kind) filters.set("kind", kind);
+    history.replaceState(null, "", "/" + (filters.size ? "?" + filters : "") + "#posts");
+    showEntries();
+  }
 
   function showEntries() {
     const list = byId("post-list");
     list.replaceChildren();
     const entries = posts.filter((post) =>
       (!kind || getKind(post) === kind) && (!month || post.date.startsWith(month)));
-    byId("post-status").textContent = entries.length ? "" : "这里暂时没有记录。";
+    byId("post-status").textContent = [month?.replace("-", "."), labels.get(kind), entries.length + " 条记录"].filter(Boolean).join(" · ");
+    byId("clear-filters").hidden = !(month || kind);
+    for (const [id, value] of [["months", month], ["kinds", kind]]) {
+      for (const button of byId(id).children) button.setAttribute("aria-pressed", String(button.value === value));
+    }
     for (const post of entries) {
       const item = document.createElement("li");
       const link = document.createElement("a");
       const time = document.createElement("time");
       const category = document.createElement("span");
-      link.href = "/?post=" + encodeURIComponent(post.slug);
+      item.id = "record-" + post.slug;
+      const detail = new URLSearchParams({ post: post.slug });
+      if (month) detail.set("month", month);
+      if (kind) detail.set("kind", kind);
+      link.href = "/?" + detail;
       link.textContent = post.title;
       time.dateTime = post.date;
       time.textContent = post.date.replaceAll("-", ".");
@@ -102,19 +124,28 @@ async function render() {
       const button = document.createElement("button");
       button.type = "button";
       button.textContent = label;
+      button.value = value;
       button.setAttribute("aria-pressed", String(!value));
       button.addEventListener("click", () => {
-        for (const sibling of nav.children) sibling.setAttribute("aria-pressed", String(sibling === button));
         select(value);
-        showEntries();
+        updateFilters();
       });
       nav.append(button);
     }
   }
 
-  addFilters("months", monthIds.map((id) => [id, id.replace("-", ".")]), (value) => { month = value; });
+  addFilters("months", monthIds.map((id) => [id, id.replace("-", ".") + " · " + posts.filter((post) => post.date.startsWith(id)).length + " 条"]), (value) => { month = value; });
   addFilters("kinds", posts.length ? [...labels] : [], (value) => { kind = value; });
+  byId("clear-filters").addEventListener("click", () => {
+    month = kind = "";
+    updateFilters();
+    byId("kinds").querySelector("button")?.focus();
+  });
   showEntries();
+  if (location.hash) {
+    const target = byId(decodeURIComponent(location.hash.slice(1)));
+    (target ?? byId("posts")).scrollIntoView();
+  }
 }
 
 render().catch(() => byId("post-status").textContent = "内容加载失败，请刷新页面重试。");

@@ -9,7 +9,7 @@
 <script type="module" src="/site.js"></script>
 </head>
 <body>
-<header><a class="brand" href="/">个人主页</a><nav aria-label="主导航"><a href="/#posts">记录</a><a href="/#about">关于</a></nav></header>
+<header><a class="brand" href="/">个人主页</a><nav aria-label="主导航"><a href="/#posts">记录</a><a href="/?kind=project#posts">小玩意</a><a href="/?kind=activity#posts">活动</a><a href="/#about">关于</a></nav></header>
 <main>
 <section id="intro">
   <div class="portrait"><span id="initial" aria-hidden="true">个</span><img id="avatar" alt="个人头像" hidden><i aria-hidden="true"></i></div>
@@ -22,11 +22,11 @@
   <div id="posts">
     <h2>记录</h2>
     <nav id="kinds" aria-label="按类型筛选" hidden></nav>
-    <ul id="post-list"></ul><p id="post-status" role="status"></p>
+    <div class="filter-summary"><p id="post-status" role="status"></p><button id="clear-filters" type="button" hidden>清除筛选</button></div><ul id="post-list"></ul>
   </div>
 </section>
 <section id="about"><h2>关于</h2><p id="bio"></p></section>
-<article id="article" hidden><a href="/#posts">返回文章</a><h1></h1><time></time><div id="body"></div></article>
+<article id="article" hidden><a id="back-to-records" href="/#posts">返回记录</a><h1></h1><time></time><div id="body"></div></article>
 </main>
 <footer><a href="/admin/">内容管理</a></footer>
 </body>

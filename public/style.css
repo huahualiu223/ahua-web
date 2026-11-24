@@ -75,3 +75,7 @@ header{background:var(--pill);box-shadow:0 8px 30px rgb(114 66 46 / 8%)}
 .portrait i{border-color:var(--lace)}
 #intro::after{opacity:.75}
 #months button[aria-pressed="true"],#kinds button[aria-pressed="true"]{background:var(--pill);border-color:var(--lace)}
+.filter-summary{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 18px;margin-top:12px}
+#clear-filters{padding:2px 0;font:inherit;color:var(--accent);background:none;border:0;text-decoration:underline;cursor:pointer}
+#post-list li,#about{scroll-margin-top:100px}
+#post-list li:target{background:var(--pill);border-radius:8px}
