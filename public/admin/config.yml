@@ -20,6 +20,13 @@ collections:
           - {name: instagram, label: Instagram 用户名, widget: string, required: false}
           - {name: wechatName, label: 公众号搜索名称, widget: string, required: false}
           - {name: wechatQr, label: 公众号二维码, widget: image, required: false, choose_url: false}
+          - name: gallery
+            label: 画廊与作品集
+            widget: list
+            required: false
+            fields:
+              - {name: title, label: 作品名, widget: string}
+              - {name: image, label: 图片, widget: image, choose_url: false}
           - name: links
             label: 其他链接
             widget: list

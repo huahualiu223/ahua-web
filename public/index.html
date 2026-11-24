@@ -4,16 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>个人主页</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;family=Zen+Maru+Gothic:wght@400;500;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
 <link rel="stylesheet" href="/style.css">
 <script type="module" src="/site.js"></script>
 </head>
 <body>
-<header><a class="brand" href="/">个人主页</a><nav aria-label="主导航"><a href="/#posts">记录</a><a href="/?kind=project#posts">小玩意</a><a href="/?kind=activity#posts">活动</a><a href="/#about">关于</a></nav></header>
+<header>
+  <a class="brand" href="/">Jessica</a>
+  <nav aria-label="主导航">
+    <a href="/about/">简介</a><a href="/code/">代码</a><a href="/notes/">随笔</a>
+    <a href="/gallery/">画廊</a><a href="/links/">链接</a>
+  </nav>
+  <div class="tools">
+    <button id="theme-toggle" type="button" title="切换显示模式" aria-label="切换显示模式">◐</button>
+    <button id="search-open" type="button" title="搜索 (Ctrl+K)" aria-label="搜索"><span class="search-icon" aria-hidden="true"></span></button>
+  </div>
+</header>
 <main>
 <section id="intro">
   <div class="portrait"><span id="initial" aria-hidden="true">个</span><img id="avatar" alt="个人头像" hidden><i aria-hidden="true"></i></div>
   <h1>个人主页</h1><p id="description"></p>
+</section>
+<section id="links" hidden><h2>链接</h2><p id="links-empty">暂无公开链接。</p>
   <nav id="contacts" aria-label="联系方式" hidden></nav>
   <details id="wechat" hidden><summary>微信公众号</summary><p id="wechat-name"></p><img id="wechat-qr" alt="微信公众号二维码" hidden></details>
 </section>
@@ -25,9 +37,16 @@
     <div class="filter-summary"><p id="post-status" role="status"></p><button id="clear-filters" type="button" hidden>清除筛选</button></div><ul id="post-list"></ul>
   </div>
 </section>
-<section id="about"><h2>关于</h2><p id="bio"></p></section>
+<section id="gallery" hidden><h2>画廊与作品集</h2><div id="gallery-items"></div><p id="gallery-empty">作品整理中。</p></section>
+<section id="about" hidden><h2>关于</h2><p id="bio"></p></section>
 <article id="article" hidden><a id="back-to-records" href="/#posts">返回记录</a><h1></h1><time></time><div id="body"></div></article>
 </main>
 <footer><a href="/admin/">内容管理</a></footer>
+<dialog id="work-dialog" aria-label="作品大图"><form method="dialog"><button>关闭</button></form><img alt=""></dialog>
+<dialog id="search-dialog" aria-labelledby="search-title">
+  <form method="dialog"><h2 id="search-title">搜索本站</h2><button aria-label="关闭搜索">关闭</button></form>
+  <input id="search-input" type="search" placeholder="输入标题或正文关键词" aria-label="搜索关键词" autofocus>
+  <p id="search-status" role="status"></p><ul id="search-results"></ul>
+</dialog>
 </body>
 </html>
