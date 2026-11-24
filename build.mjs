@@ -4,7 +4,7 @@ await mkdir("dist/content", { recursive: true });
 for (const file of ["index.html", "style.css", "site.js"]) {
   await copyFile("public/" + file, "dist/" + file);
 }
-for (const route of ["about", "code", "notes", "gallery", "links"]) {
+for (const route of ["about", "blog", "code", "notes", "gallery", "links"]) {
   await mkdir("dist/" + route, { recursive: true });
   await copyFile("public/index.html", "dist/" + route + "/index.html");
 }

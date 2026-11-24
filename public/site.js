@@ -53,14 +53,14 @@ async function render() {
   byId("links-empty").hidden = Boolean(contacts.children.length || !byId("wechat").hidden);
   const path = location.pathname.replace(/\/$/, "") || "/";
   const routes = {
-    "/about": ["about", "简介"], "/code": ["archive", "代码"],
-    "/notes": ["archive", "随笔"], "/gallery": ["gallery", "画廊与作品集"],
-    "/links": ["links", "链接"],
+    "/about": ["about", "About"], "/blog": ["archive", "Blog"], "/code": ["archive", "Code"],
+    "/notes": ["archive", "Notes"], "/gallery": ["gallery", "Gallery"],
+    "/links": ["links", "Links"],
   };
   const route = routes[path];
   if (route) {
     document.querySelectorAll("main > section").forEach((section) => section.hidden = section.id !== route[0]);
-    if (route[0] === "archive") byId("posts").querySelector("h2").textContent = route[1];
+    (route[0] === "archive" ? byId("posts") : byId(route[0])).querySelector("h2").textContent = route[1];
     document.title = route[1] + " · Jessica";
     document.querySelector('header a[href="' + path + '/"]')?.setAttribute("aria-current", "page");
   }
@@ -96,7 +96,7 @@ async function render() {
     for (const key of ["month", "kind"]) {
       if (query.has(key)) back.set(key, query.get(key));
     }
-    byId("back-to-records").href = (query.get("from") === "code" ? "/code/" : query.get("from") === "notes" ? "/notes/" : "/") + "?" + back + "#record-" + encodeURIComponent(selected);
+    byId("back-to-records").href = (query.get("from") === "code" ? "/code/" : query.get("from") === "notes" ? "/notes/" : query.get("from") === "blog" ? "/blog/" : "/") + "?" + back + "#record-" + encodeURIComponent(selected);
     const post = posts.find((entry) => entry.slug === selected);
     document.querySelectorAll("main > section").forEach((section) => section.hidden = true);
     const article = byId("article");
@@ -145,7 +145,7 @@ async function render() {
       const category = document.createElement("span");
       item.id = "record-" + post.slug;
       const detail = new URLSearchParams({ post: post.slug });
-      if (fixedKind) detail.set("from", path.slice(1));
+      if (route?.[0] === "archive") detail.set("from", path.slice(1));
       if (month) detail.set("month", month);
       if (kind) detail.set("kind", kind);
       link.href = "/?" + detail;
